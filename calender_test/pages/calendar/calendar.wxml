@@ -1,0 +1,93 @@
+<import src="../../template/index.wxml"/>
+
+<block wx:if="{{type==0}}">
+<block wx:if="{{version==0}}">
+
+<view class="calendar-wrap">
+   <template is="calendar" data="{{...calendar}}" />
+   <!--<button class="switchView" type="primary" bindtap="switchView">周/月视图</button>-->
+</view>
+
+
+<button bindtap='switchCalendar'>个人日历</button>
+
+<text style="color:red">添加任务
+</text>
+<text>{{data[0].year}}年{{data[0].month}}月{{data[0].day}}日</text>
+<input bindinput='taskTodo' placeholder='请输入任务名' type='text'></input>
+<button bindtap='confirm' >确定
+</button>
+
+<text style="color:red">任务列表
+</text>
+
+<block wx:if="{{flag==true}}">
+<text>今天没有任务哦！</text></block>
+
+<block wx:else >
+  <view class='todoList' wx:for="{{dailywork}}" wx:key='item' data-item="item">
+    <view class='todoT'><text>{{item.todoText}}</text></view>
+    <view class='todoB'><button bindtap='delete' >删除</button></view>
+    <view class='todoB'><button bindtap='change' >修改</button></view>
+  </view>
+</block>
+
+<text style="color:red">公告栏
+</text>
+
+<text style="color:red">留言板
+</text>
+
+</block>
+
+<block wx:else>
+
+<view class="calendar-wrap">
+   <template is="calendar" data="{{...calendar}}" />
+  <!--<button class="switchView" type="primary" bindtap="switchView">周/月视图</button>-->
+</view>
+
+<button bindtap='switchCalendar'>个人日历</button>
+
+<text style="color:red">任务列表
+</text>
+
+<block wx:if="{{flag==true}}">
+<text>今天没有任务哦！</text></block>
+
+<block wx:else >
+  <view class='todoList' wx:for="{{dailywork}}" data-item="item">
+    <view class='todoT'><text>{{item.todoText}}</text></view>
+  </view>
+</block>
+
+<text style="color:red">公告栏
+</text>
+
+<text style="color:red">留言板
+</text>
+
+</block>
+</block>
+
+<block wx:else>
+个人日历
+<view class="calendar-wrap">
+   <template is="calendar" data="{{...calendar}}" />
+   <!--<button class="switchView" type="primary" bindtap="switchView">周/月视图</button>-->
+</view>
+<button bindtap='switchCalendar'>团队日历</button>
+
+<text style="color:red">任务列表
+</text>
+<block wx:if="{{flag==true}}">
+<text>今天没有任务哦！</text></block>
+
+<block wx:else >
+  <view class='todoList' wx:for="{{dailywork}}" wx:key='item' data-item="item">
+    <view class='todoT'><text>{{item.todoText}}</text></view>
+    <view class='todoB'><button bindtap='delete' >完成提交</button></view>
+  </view>
+</block>
+
+</block>
