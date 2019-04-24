@@ -1,0 +1,9 @@
+<!--pages/teamhall/teamhall.wxml-->
+<view class="searcher">
+<input class="idsearcher" placeholder='请输入队伍ID'></input>
+<input class="namesearcher" placeholder='请输入队伍名称'></input>
+</view>
+
+<view>
+<button class="createteam" bindtap='createTeam'>创建队伍（脑补一个加号）</button>
+</view>

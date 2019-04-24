@@ -1,0 +1,89 @@
+<!--pages/signup/signup.wxml-->
+
+<!--昵称、邮箱、年级-->
+
+<view class="generalinfo">
+
+  <view class="nickname">
+    <input class="mynickname" placeholder='请输入昵称' bindinput="nicknameInput"></input>
+  </view>
+
+  <view class="email">
+    <input class="myemail" placeholder='请输入邮箱' bindinput="emailInput"></input>
+  </view>
+
+  <view class="grade">
+    <picker bindchange="changeGrade" value="{{index}}" range="{{array}}">
+      <view class="picker">{{array[index]}}</view>
+    </picker>
+  </view>
+
+</view>
+
+<!--选择、增加标签-->
+
+<view class="labels">
+
+  <view class="labels_title">
+
+    <view class="labels_text">
+      <text>我的标签</text>
+    </view>
+
+    <view class="labels_amount">
+      <text>{{userlabel_amount}}</text>
+      <text>/5</text>
+    </view>
+
+  </view>
+  <view class='floatlabels'>
+
+    <view class="floatlabels0" hidden="{{currentLabelIndex != 0}}">
+      <button class="chooselabels" bindtap='onChooseLabel' id='0'>{{defaultlabels[0].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='1'>{{defaultlabels[1].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='2'>{{defaultlabels[2].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='3'>{{defaultlabels[3].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='4'>{{defaultlabels[4].name}}</button>
+    </view>
+    <view class="floatlabels1" hidden="{{currentLabelIndex != 1}}">
+      <button class="chooselabels" bindtap='onChooseLabel' id='5'>{{defaultlabels[5].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='6'>{{defaultlabels[6].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='7'>{{defaultlabels[7].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='8'>{{defaultlabels[8].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='9'>{{defaultlabels[9].name}}</button>
+    </view>
+    <view class="floatlabels2" hidden="{{currentLabelIndex != 2}}">
+      <button class="chooselabels" bindtap='onChooseLabel' id='10'>{{defaultlabels[10].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='11'>{{defaultlabels[11].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='12'>{{defaultlabels[12].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='13'>{{defaultlabels[13].name}}</button>
+      <button class="chooselabels" bindtap='onChooseLabel' id='14'>{{defaultlabels[14].name}}</button>
+    </view>
+
+    <view class="change">
+      <button class="changegroup" bindtap='changeGroup'>换一组</button>
+    </view>
+  </view>
+
+  <view class="showlabels">
+    <view value="id:{{defaultlabels.id}}" wx:for="{{defaultlabels}}" wx:key="id" wx:for-item="labels">
+      <button id="{{labels.id}}" hidden="{{!labels.isSelected}}" bindtap='onCancelLabel'>{{labels.name}}</button>
+    </view>
+  </view>
+
+  <view class="chosenlabels"></view>
+
+</view>
+
+<!--提交-->
+
+<view class="buttom">
+
+  <view class="submit">
+    <button class="submitbtn" bindtap='submitinfo'>提交</button>
+  </view>
+  <view class="tip">
+    <text>{{tip}}</text>
+  </view>
+
+</view>
