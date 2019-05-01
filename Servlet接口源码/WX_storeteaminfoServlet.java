@@ -65,7 +65,7 @@ public class WX_storeteaminfoServlet extends HttpServlet {
         String name, teamtype, teamtype_small,captain, number_max, description, date, year, month, day;
         name = request.getParameter("name");
         teamtype = request.getParameter("teamtype");
-        teamtype_small = request.getParameter("teamtype_samll");  
+        teamtype_small = request.getParameter("teamtype_small");  
         captain = request.getParameter("captain");
         number_max = request.getParameter("number_max");
         description = request.getParameter("description");
@@ -75,7 +75,7 @@ public class WX_storeteaminfoServlet extends HttpServlet {
         day = date.split("-")[2];
         String state = "0";
         String is_full = "0";
-        Team t = new Team(0,name,teamtype,teamtype_small,captain,Integer.parseInt(number_max),1,state,description,year,month,day,is_full);
+        Team t = new Team(name,teamtype,teamtype_small,captain,Integer.parseInt(number_max),1,state,description,year,month,day,is_full);
         t.toString();
         List<Team> lists= new ArrayList<Team>();
         lists.add(t);
@@ -96,14 +96,15 @@ public class WX_storeteaminfoServlet extends HttpServlet {
             rs.next();
             int ct = rs.getInt("Count(*)");
             System.out.println(ct);
-            String sql2;
+            String sql2,sql3;
             if(ct == 0){
             	System.out.println("不存在");
-            	sql2 = "Insert Into team (name,teamtype,teamtype_small,captain,number_max,number_now,state,description,year,month,day ,is_full)"
-            			+ "values('"+name+"','"+teamtype+"','"+teamtype_small+"','"+captain+"','"+number_max+"',1,0,'"+description+"','"+year+"','"+month+"','"+day+"',0)";
+            	sql2 = "Insert Into team values('"+t.getid()+"','"+name+"','"+teamtype+"','"+teamtype_small+"','"+captain+"','"+number_max+"',1,0,'"+description+"','"+year+"','"+month+"','"+day+"',0)";
             	System.out.println(sql2);
     		    statement.execute(sql2);
+    		    sql3 = "Insert Into user_team values('"+captain+"','"+t.getid()+"','1','0')";
     		    System.out.println("Succeed to insert");
+    		    statement.execute(sql3);
             }
             else{
             	System.out.println("存在,该用户创立过同名team，不应该再次创立");
