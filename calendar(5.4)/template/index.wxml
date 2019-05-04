@@ -23,7 +23,7 @@
               <view class="day border-radius {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} box box-align-center box-pack-center">{{item.day}}</view>
             </view>
             <view wx:else class="dot-day-height box box-tb box-align-center box-pack-center">
-              <view class="day border-radius {{item.tasknum=='1'?'day-circle1':(item.tasknum=='2'?'day-circle2':(item.tasknum=='3'?'day-circle3':''))}} {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} box box-align-center box-pack-center">{{item.day}}</view>
+              <view class="day border-radius {{item.signal=='1'?'day-circle1':(item.signal=='2'?'day-circle2':(item.signal=='3'?'day-circle3':''))}} {{item.choosed ? 'day-choosed-color day-choosed-bg' : ''}} {{ item.disable ? 'disable-day-color disable-day-bg' : '' }} box box-align-center box-pack-center">{{item.day}}</view>
             </view>
           </view>
         </view>

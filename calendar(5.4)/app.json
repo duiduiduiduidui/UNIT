@@ -1,0 +1,37 @@
+{
+  "pages":[
+    
+    "pages/calendar/calendar",
+    "pages/mission/mission",
+    "pages/select/select",
+    "pages/index/index",
+    "pages/logs/logs"
+  ],
+  "window":{
+    "backgroundTextStyle":"light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle":"black"
+  },
+
+  "tabBar": {
+    "color": "#7f8389",
+    "selectedColor": "#00a8f3",
+    "borderStyle": "black",
+    "backgroundColor": "#f7f7fa",
+    "list": [
+      {
+        "pagePath": "pages/calendar/calendar",
+        "text": "日历",
+        "iconPath": "/image/function.png",
+        "selectedIconPath": "/image/function1.png"
+      },
+      {
+        "pagePath": "pages/mission/mission",
+        "text": "任务列表",
+        "iconPath": "/image/home.png",
+        "selectedIconPath": "/image/home1.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+<!-- 外层包裹视图 -->
+<view class="cont">
+  <!-- 列表 -->
+
+  <view wx:for="{{list}}" wx:key="index" class="list">
+    <!-- 滑动删除 -->
+    <view bindtouchstart="touchS" bindtouchmove="touchM" bindtouchend="touchE" data-index="{{index}}" style="{{item.shows}}" class="list_del txt">
+      <!-- 列表图片 -->
+      <image class="list_img" mode="widthFix" src="{{item.image}}"></image>
+      <text class='list_name'>{{item.name}}</text>
+      <label class='list_title'>队伍名称：{{item.title}}</label>
+      <text class='list_datas'>完成时间:{{item.year}}.{{item.month}}.{{item.day}}</text>
+    </view>
+    <view data-index="{{index}}" bindtap="delItem" class="{{item.type=='0'?'list_del del' : 'list_del com'}}">{{item.type=='0'?'提交' : '确认'}}</view>
+  </view>
+</view>

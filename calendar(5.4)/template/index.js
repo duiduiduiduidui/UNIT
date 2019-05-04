@@ -582,6 +582,7 @@ const conf = {
             ) {
               day.showTodoLabel = true;
               day.tasknum = +item.tasknum;
+              day.signal = +item.signal;
             }
           }
         });
@@ -597,6 +598,7 @@ const conf = {
           // showTodoLabel 是否显示待办标记
           days[selectedDays[0].day - 1].showTodoLabel = true;
           days[selectedDays[0].day - 1].tasknum = +item.tasknum;
+          days[selectedDays[0].day - 1].signal = +item.signal;
         }
       }
     });
@@ -655,6 +657,7 @@ const conf = {
       if (target.showTodoLabel && item.todoText)
         target.todoText = item.todoText;
         target.tasknum = item.tasknum;
+        target.signal = item.signal;
     });
     const o = {
       'calendar.days': days,
