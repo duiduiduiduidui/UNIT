@@ -39,18 +39,18 @@ import java.sql.Statement;
 @WebServlet("/WX_signedupServlet")
 public class WX_signedupServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //ÉèÖÃÇëÇó±àÂë
+        //è®¾ç½®è¯·æ±‚ç¼–ç 
         request.setCharacterEncoding("utf-8");
         response.setContentType("text/html;charset=utf-8");
-        /* ÉèÖÃÏìÓ¦Í·ÔÊĞíajax¿çÓò·ÃÎÊ */
+        /* è®¾ç½®å“åº”å¤´å…è®¸ajaxè·¨åŸŸè®¿é—® */
         response.setHeader("Access-Control-Allow-Origin", "*");
-        /* ĞÇºÅ±íÊ¾ËùÓĞµÄÒìÓòÇëÇó¶¼¿ÉÒÔ½ÓÊÜ£¬ */
+        /* æ˜Ÿå·è¡¨ç¤ºæ‰€æœ‰çš„å¼‚åŸŸè¯·æ±‚éƒ½å¯ä»¥æ¥å—ï¼Œ */
         response.setHeader("Access-Control-Allow-Methods", "GET,POST");
-        //»ñÈ¡Î¢ĞÅĞ¡³ÌĞògetµÄ²ÎÊıÖµ²¢´òÓ¡
+        //è·å–å¾®ä¿¡å°ç¨‹åºgetçš„å‚æ•°å€¼å¹¶æ‰“å°
         
         
         System.out.println("openid="+request.getParameter("openid"));
-        //×ª³ÉjsonÊı¾İ
+        //è½¬æˆjsonæ•°æ®
         String openid;
         String SourceI="";
         openid = request.getParameter("openid");
@@ -67,30 +67,30 @@ public class WX_signedupServlet extends HttpServlet {
             System.out.println(ct);
             String sql2;
             if(ct == 0){
-            	System.out.println("²»´æÔÚ");
+            	System.out.println("ä¸å­˜åœ¨");
             	SourceI = "yes";
             }
             else{
-            	System.out.println("¸ÃÓÃ»§ÒÑ×¢²á¹ı");
+            	System.out.println("è¯¥ç”¨æˆ·å·²æ³¨å†Œè¿‡");
             	SourceI = "no";
             }
-            
+            SourceI = "";
     	}
     	catch(SQLException e){
     		System.out.println(e);
     	}
-//        Map<String, Object> result = new HashMap<String, Object>();
-//        //JsonParser parse =new JsonParser();//´´½¨json½âÎöÆ÷
-//		//JsonObject json=(JsonObject) parse.parse(new FileReader("C:\\Users\\Administrator\\Desktop\\iTrip\\data.json"));  //´´½¨jsonObject¶ÔÏó
-//       
-//        result.put("msg", SourceI);
-//        //Ê¹ÓÃGsonÀàĞèÒªµ¼Èëgson-2.8.0.jar
-//        
-//        
-//        String json1 = new Gson().toJson(result);
-        String json1 = SourceI;
+        Map<String, Object> result = new HashMap<String, Object>();
+        //JsonParser parse =new JsonParser();//åˆ›å»ºjsonè§£æå™¨
+		//JsonObject json=(JsonObject) parse.parse(new FileReader("C:\\Users\\Administrator\\Desktop\\iTrip\\data.json"));  //åˆ›å»ºjsonObjectå¯¹è±¡
+       
+        result.put("msg", SourceI);
+        //ä½¿ç”¨Gsonç±»éœ€è¦å¯¼å…¥gson-2.8.0.jar
+        
+        
+        String json1 = new Gson().toJson(result);
+        
         Writer out = response.getWriter();
-        System.out.println(SourceI);
+        
         out.write(json1);
         out.flush();
     }

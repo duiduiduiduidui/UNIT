@@ -1,0 +1,56 @@
+<!--pages/teamhall/teamcreate/teamcreate.wxml-->
+
+<view class="createteam">
+
+  <view class="teamname">
+    <!--队伍名称-->
+    <input class="myteamname" placeholder='队伍名称' bindinput="teamNameInput"></input>
+  </view>
+
+
+  <!--队伍类型-->
+  <view class="teamtype">
+    <view class="teamtype_title">请选择队伍类型</view>
+    <picker mode="multiSelector" bindchange="teamTypeChange" bindcolumnchange="teamTypeColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+      <view class="picker">
+      {{teamtype}}，{{teamtype_small}}
+      </view>
+    </picker>
+  </view>
+
+  <!--队伍人数-->
+  <view class="teamscale">
+    <text class="teamscale_title">队伍人数：</text>
+    <view class="teamscaleslider">
+      <slider min="1" max="10" bindchange="changeTeamScale" show-value/>
+    </view>
+  </view>
+
+  <!--队伍到期日-->
+  <view class="teamdate">
+    <view class="teamdate_title">请选择队伍到期日</view>
+    <picker mode="date" value="{{date}}" start="{{date}}" end="2022-08-30" bindchange="changeTeamDate">
+      <view class="picker">
+        {{date}}
+      </view>
+    </picker>
+  </view>
+
+
+  <view class="teamdescription">
+    <!--队伍描述-->
+    <input class="myteamdescription" placeholder='队伍描述' bindinput="teamDescriptionInput"></input>
+  </view>
+  
+</view>
+
+<view class="buttom">
+
+  <view class="submit">
+    <button class="submitbtn" bindtap='submitinfo'>提交</button>
+  </view>
+  <view class="tip">
+    <text>{{tip}}</text>
+  </view>
+
+</view>

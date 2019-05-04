@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import JDBCConnector.DataBaseDemo;
+import BasicClass.Team;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +18,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;  
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.ResultSetMetaData;
 import java.io.FileReader;
 import java.util.Map;
 import java.util.HashMap;
@@ -36,8 +37,23 @@ import java.sql.Statement;
 /**
  * Servlet implementation class WX_storeuserinfoServlet
  */
-@WebServlet("/WX_storeuserinfoServlet")
-public class WX_storeuserinfoServlet extends HttpServlet {
+@WebServlet("/WX_getmymissionServlet")
+//用来存储个人信息
+public class WX_getmymissionServlet extends HttpServlet {
+	
+	private static List convertList(ResultSet rs) throws SQLException{
+		List list = new ArrayList();
+		ResultSetMetaData md = rs.getMetaData();//获取键名
+		int columnCount = md.getColumnCount();//获取行的数量
+		while (rs.next()) {
+		Map rowData = new HashMap();//声明Map
+		for (int i = 1; i <= columnCount; i++) {
+		rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
+		}
+		list.add(rowData);
+		}
+		return list;
+		}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //设置请求编码
         request.setCharacterEncoding("utf-8");
@@ -45,66 +61,42 @@ public class WX_storeuserinfoServlet extends HttpServlet {
         /* 设置响应头允许ajax跨域访问 */
         response.setHeader("Access-Control-Allow-Origin", "*");
         /* 星号表示所有的异域请求都可以接受， */
-        response.setHeader("Access-Control-Allow-Methods", "GET,POST");
+        response.setHeader("Access-Control-Allow-Method" + "s", "GET,POST");
         //获取微信小程序get的参数值并打印
         
-        
+       
         System.out.println("openid="+request.getParameter("openid"));
-        System.out.println("email="+request.getParameter("email"));
-        System.out.println("nickname="+request.getParameter("nickname"));
-        System.out.println("label="+request.getParameter("label"));
-        System.out.println("grade="+request.getParameter("grade"));
         //转成json数据
-        String openid, email, nickname, label, grade;
+        String openid;
         openid = request.getParameter("openid");
-        nickname = request.getParameter("nickname");
-        email = request.getParameter("email");      
-        label = request.getParameter("label");
-        grade = request.getParameter("grade");
+        List list = new ArrayList();
         try{
     		Connection cc=DataBaseDemo.getConnection();
     	    if(!cc.isClosed())
     	    System.out.println("Succeeded connecting to the Database!");
     	    Statement statement = cc.createStatement();
-    	    String sql = "SELECT Count(*) FROM USER WHERE openid = '" + openid +"'";
+    	    String sql = "SELECT * FROM MISSION WHERE openid = '" + openid +"'";
         	System.out.println(sql);
         	ResultSet rs = statement.executeQuery(sql);
-            rs.next();
-            int ct = rs.getInt("Count(*)");
-            System.out.println(ct);
-            String sql2;
-            if(ct == 0){
-            	System.out.println("不存在");
-            	sql2 = "Insert Into user values('"+openid +"','"+nickname+"','"+email+"','"+grade+"','"+label+"',6000,4,4,4 )";
-            	System.out.println(sql2);
-    		    statement.execute(sql2);
-    		    System.out.println("Succeed to insert");
-            }
-            else{
-            	System.out.println("存在,该用户已注册过，不应该进入这个界面");
-//            	sql2 = "Update chibusi_daily set keshu='"+keshu+"' WHERE USERNAME='"+username+"' AND DATE='"+date+"' AND meal='"+meal+"'and food='"+food+"'";
-//            	System.out.println(sql2);
-//    		    statement.execute(sql2);
-//    		    System.out.println("Succeed to update");
-            }
+        	list=convertList(rs);
             
     	}
     	catch(SQLException e){
     		System.out.println(e);
     	}
-        Map<String, Object> result = new HashMap<String, Object>();
+        //Map<String, Object> result = new HashMap<String, Object>();
         //JsonParser parse =new JsonParser();//创建json解析器
 		//JsonObject json=(JsonObject) parse.parse(new FileReader("C:\\Users\\Administrator\\Desktop\\iTrip\\data.json"));  //创建jsonObject对象
         
-        result.put("msg", "用户信息存储成功");
+        //result.put("msg", "用户信息存储成功");
         //使用Gson类需要导入gson-2.8.0.jar
-        
-        
-        String json1 = new Gson().toJson(result);
-        
+       
+        //String json1 = new Gson().toJson(result);
+        Gson gson = new Gson();
+		String json2 = gson.toJson(list);
         Writer out = response.getWriter();
         
-        out.write(json1);
+        out.write(json2);
         out.flush();
     }
 
