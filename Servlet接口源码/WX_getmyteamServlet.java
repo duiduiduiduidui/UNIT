@@ -37,11 +37,11 @@ import java.sql.Statement;
 /**
  * Servlet implementation class WX_storeuserinfoServlet
  */
-@WebServlet("/WX_getmymissionServlet")
+@WebServlet("/WX_getmyteamServlet")
 //用来存储个人信息
-public class WX_getmymissionServlet extends HttpServlet {
+public class WX_getmyteamServlet extends HttpServlet {
 	
-	private static List convertList(ResultSet rs) throws SQLException{
+	private static List convertList(ResultSet rs,String openid) throws SQLException{
 		List list = new ArrayList();
 		ResultSetMetaData md = rs.getMetaData();//获取键名
 		int columnCount = md.getColumnCount();//获取行的数量
@@ -49,6 +49,12 @@ public class WX_getmymissionServlet extends HttpServlet {
 		Map rowData = new HashMap();//声明Map
 		for (int i = 1; i <= columnCount; i++) {
 		rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
+		}
+		if(rs.getObject("captain")==openid) {
+			rowData.put("is_captain",1);
+		}
+		else {
+			rowData.put("is_captain",0);
 		}
 		list.add(rowData);
 		}
@@ -75,12 +81,15 @@ public class WX_getmymissionServlet extends HttpServlet {
     	    if(!cc.isClosed())
     	    System.out.println("Succeeded connecting to the Database!");
     	    Statement statement = cc.createStatement();
-    	    String sql = "SELECT * FROM MISSION WHERE member = '" + openid +"' and state = '0'";
-        	System.out.println(sql);
-        	ResultSet rs = statement.executeQuery(sql);
-        	list=convertList(rs);
-            
-    	}
+    	    
+    	    
+		    String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
+		    		"where state='0' and user ='"+openid+"'";
+	    	System.out.println(sql);
+	    	ResultSet rs = statement.executeQuery(sql);
+	    	list=convertList(rs,openid);
+    	    
+        }
     	catch(SQLException e){
     		System.out.println(e);
     	}
@@ -98,6 +107,7 @@ public class WX_getmymissionServlet extends HttpServlet {
         
         out.write(json2);
         out.flush();
+        
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

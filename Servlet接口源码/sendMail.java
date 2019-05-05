@@ -1,5 +1,16 @@
 package WX_Servlet;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -12,11 +23,72 @@ import javax.mail.Message.RecipientType;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-
+import java.util.Calendar;
+import JDBCConnector.DataBaseDemo;
 public class sendMail {
-    public static void send(String email, String openid) throws Exception{
-        //0.1 确定连接位置
-        Properties props = new Properties();
+	public static List getmailinfo() throws SQLException{
+		List<Map<String, Object>> maillist = new ArrayList<Map<String, Object>>();
+		List list = new ArrayList();
+        
+		Connection cc=DataBaseDemo.getConnection();
+	    if(!cc.isClosed())
+	    System.out.println("Succeeded connecting to the Database!");
+	    Statement statement = cc.createStatement();
+	    
+    	String sql = "SELECT * FROM USER ";
+    	System.out.println(sql);
+        ResultSet rs = statement.executeQuery(sql);
+		while (rs.next()) {
+		list.add(rs.getObject(1));
+		list.add(rs.getObject(2));
+		list.add(rs.getObject(3));
+		}
+		List listofmission = new ArrayList();
+		String openid1,sql1,sql2,nickname,mail;
+		int y,m,d,h;    
+		Calendar cal=Calendar.getInstance();    
+		y=cal.get(Calendar.YEAR);    
+		m=cal.get(Calendar.MONTH);    
+		d=cal.get(Calendar.DATE)+1;  
+		System.out.println("明天是"+y+"年"+m+"月"+d+"日");  
+		for(int i=0;i<list.size();i+=3) {
+			openid1 = list.get(i).toString();
+			nickname = list.get(i+1).toString();
+			mail = list.get(i+2).toString();
+			sql1 = "Select Count(*) from mission where member ='"+openid1+"' and state = '0' and year='"+y+"' and "
+					+ "month = '"+m+"' and day = '"+d+"'";
+			System.out.println(sql1);
+			sql2 = "Select Count(*) from mission where member = '"+openid1+"' and state = '0' and is_overdue='1'";
+			System.out.println(sql2);
+			rs = statement.executeQuery(sql1);
+            rs.next();
+            int ct = rs.getInt("Count(*)");
+            rs = statement.executeQuery(sql2);
+            rs.next();
+            int ct2 = rs.getInt("Count(*)");
+            System.out.println("openid = "+openid1+" ,email = "+mail+" ddl = "+ct+" ,overdue = "+ct2);
+            Map<String, Object> rowData = new HashMap<String, Object>();
+            rowData.put("nickname", nickname);
+            rowData.put("mail", mail);
+            rowData.put("ddl", ct);
+            rowData.put("overdue", ct2);
+            maillist.add(rowData);
+            
+		}
+		for (Map<String, Object> map : maillist) {
+			System.out.print(map.get("nickname"));
+			System.out.println(map.get("namil"));
+	}
+		for (int i = 0; i < maillist.size(); i++) {
+            System.out.print(maillist.get(i)+" ");
+
+       }    
+            
+		return maillist;
+		
+	}
+	public static void send(String email,String nickname,int ddl,int overdue) throws AddressException, MessagingException {
+		Properties props = new Properties();
         //获取163邮箱smtp服务器的地址，
         props.setProperty("mail.host", "smtp.163.com");
         //是否进行权限验证。
@@ -64,14 +136,39 @@ public class sendMail {
          */
         message.setRecipient(RecipientType.TO, new InternetAddress(email));
         // 2.3 主题（标题）
-        message.setSubject("这是一个自动发送邮件测试");
+        message.setSubject("这是一个四点自动发送的邮件");
         // 2.4 正文
-        String str =openid +
-                        "您好，您明天有DDL哦！<br/>" +
+        String str ;
+        if (ddl!=0 && overdue !=0) {
+        	str =nickname +
+                        "，您好，您明天有+"+ddl+"个DDL哦！<br/>" +
                         "请抓紧完成<br/>" +
-                        "不然明天就是红色警告了<br/>" +
-                        "如果不是本人，请删除邮件"+
-                        "如果收到邮件，登陆UNIT查看任务情况";
+                        "P.S.<br/>" +
+                        "您有+"+overdue+"个任务已超时<br/>"+
+                        "请登陆UNIT查看任务情况";
+        }
+        else if(ddl==0 && overdue!=0) {
+        	str =nickname +
+                    "，你好！<br/>"+
+                    "你有+"+overdue+"个任务已超时<br/>"+
+                    "请登陆UNIT查看任务情况";
+        }
+        else if(ddl!=0 && overdue ==0) {
+        	str =nickname +
+                    "，您好，您明天有+"+ddl+"个DDL哦！<br/>" +
+                    "请抓紧完成<br/>" +
+                    "" +
+                    "（无超时任务）<br/>"+
+                    "请登陆UNIT查看任务情况";
+        }
+        else {
+        	str =nickname +
+                    "，您好，您明天没有DDL哦！<br/>" +
+                    "" +
+                    "（无超时任务）<br/>"+
+                    "请登陆UNIT查看任务情况";
+        }
+        
         //设置编码，防止发送的内容中文乱码。
         message.setContent(str, "text/html;charset=UTF-8");
         
@@ -79,5 +176,20 @@ public class sendMail {
         //3发送消息
         Transport.send(message);
         System.out.println("发送成功");
+	}
+    public static void main(String[] args) throws Exception{
+        List<Map<String,Object>> list = getmailinfo();
+        String mail,nickname,ddl,overdue;
+        int ddl_int,overdue_int;
+        for (Map<String, Object> map : list) {
+        	mail = map.get("mail").toString();
+        	nickname = map.get("nickname").toString();
+        	ddl = map.get("ddl").toString();
+        	overdue = map.get("overdue").toString();
+        	ddl_int = Integer.parseInt(ddl);
+        	overdue_int = Integer.parseInt(overdue);
+        	send(mail,nickname,ddl_int,overdue_int);
+       }
+        
     }
 }

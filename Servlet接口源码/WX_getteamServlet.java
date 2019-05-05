@@ -49,13 +49,34 @@ public class WX_getteamServlet extends HttpServlet {
 		Map rowData = new HashMap();//声明Map
 		for (int i = 1; i <= columnCount; i++) {
 		rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
+		String columnname = md.getColumnName(i);
+		String teamtype_smalll;
+		if(columnname.matches("teamtype_small")) {
+			if(rs.getObject(i).toString().equals("数学建模")) {
+				teamtype_smalll = "1";
+			}
+			else if(rs.getObject(i).toString().equals("计算机大赛")) {
+				teamtype_smalll = "2";
+			}
+			else if(rs.getObject(i).toString().equals("商业分析")) {
+				teamtype_smalll = "3";
+			}
+			else if(rs.getObject(i).toString().equals("大创竞赛")) {
+				teamtype_smalll = "4";
+			}
+			else if(rs.getObject(i).toString().equals("约饭")) {
+				teamtype_smalll = "5";
+			}
+			else if(rs.getObject(i).toString().equals("约球")) {
+				teamtype_smalll = "6";
+			}
+			else {;teamtype_smalll = "0";}
+			
+			rowData.put("teamtype_smalll", teamtype_smalll);
 		}
-		if(rs.getObject(4)==openid) {
-			rowData.put("is_captain",1);
 		}
-		else {
-			rowData.put("is_captain",0);
-		}
+		
+		
 		list.add(rowData);
 		}
 		return list;
@@ -78,7 +99,7 @@ public class WX_getteamServlet extends HttpServlet {
         //转成json数据
         String info, teamtype, teamtype_small,openid;
         teamtype = request.getParameter("teamtype");
-        teamtype_small = request.getParameter("teamtype_samll");  
+        teamtype_small = request.getParameter("teamtype_small");  
         info = request.getParameter("info");
         openid = request.getParameter("openid");
         List list = new ArrayList();
@@ -88,20 +109,23 @@ public class WX_getteamServlet extends HttpServlet {
     	    System.out.println("Succeeded connecting to the Database!");
     	    Statement statement = cc.createStatement();
     	    
-    	    if(teamtype=="all") {
-	    	    String sql = "SELECT * FROM TEAM where state='0' and is_full = '0' and(name like '%+"+info+"%' or id like '%+"+info+"%')";
+    	    if(teamtype.matches("all")) {
+	    	    String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
+	    	    		"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and user !='"+openid+"'and(name like '%"+info+"%' or id like '%"+info+"%')";
 	        	System.out.println(sql);
 	        	ResultSet rs = statement.executeQuery(sql);
 	        	list=convertList(rs,openid);
     	    }
-    	    else if(teamtype_small=="all") {
-    	    	String sql = "SELECT * FROM TEAM where state='0' and is_full = '0' and teamtype="+"'"+teamtype+"'and(name like '%+\"+info+\"%' or id like '+%"+info+"%')";
+    	    else if(teamtype_small.matches("all")) {
+    	    	String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
+    	    			"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and user !='"+openid+"'and teamtype="+"'"+teamtype+"'and(name like '%"+info+"%' or id like '%"+info+"%')";
  	        	System.out.println(sql);
  	        	ResultSet rs = statement.executeQuery(sql);
  	        	list=convertList(rs,openid);
     	    }
     	    else {
-    	    	String sql = "SELECT * FROM TEAM where state='0' and is_full = '0' and teamtype="+"'"+teamtype+"' and teamtype_small = '"+teamtype_small+"'and(name like '%+\"+info+\"%' or id like '%+"+info+"%')";
+    	    	String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
+    	    			"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and user !='"+openid+"'and teamtype="+"'"+teamtype+"' and teamtype_small = '"+teamtype_small+"'and(name like '%"+info+"%' or id like '%"+info+"%')";
  	        	System.out.println(sql);
  	        	ResultSet rs = statement.executeQuery(sql);
  	        	list=convertList(rs,openid);

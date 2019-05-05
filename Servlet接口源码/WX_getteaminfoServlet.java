@@ -37,21 +37,22 @@ import java.sql.Statement;
 /**
  * Servlet implementation class WX_storeuserinfoServlet
  */
-@WebServlet("/WX_getmymissionServlet")
+@WebServlet("/WX_getteaminfoServlet")
 //用来存储个人信息
-public class WX_getmymissionServlet extends HttpServlet {
+public class WX_getteaminfoServlet extends HttpServlet {
 	
-	private static List convertList(ResultSet rs) throws SQLException{
-		List list = new ArrayList();
+	private static List convertList(ResultSet rs,List list) throws SQLException{
 		ResultSetMetaData md = rs.getMetaData();//获取键名
 		int columnCount = md.getColumnCount();//获取行的数量
 		while (rs.next()) {
-		Map rowData = new HashMap();//声明Map
-		for (int i = 1; i <= columnCount; i++) {
-		rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
+			Map rowData = new HashMap();//声明Map
+			for (int i = 1; i <= columnCount; i++) {
+			rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
+			}
+			list.add(rowData);
 		}
-		list.add(rowData);
-		}
+
+		
 		return list;
 		}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -65,22 +66,31 @@ public class WX_getmymissionServlet extends HttpServlet {
         //获取微信小程序get的参数值并打印
         
        
-        System.out.println("openid="+request.getParameter("openid"));
+        System.out.println("id="+request.getParameter("id"));
         //转成json数据
-        String openid;
-        openid = request.getParameter("openid");
+        String id;
+        id = request.getParameter("id");
         List list = new ArrayList();
         try{
     		Connection cc=DataBaseDemo.getConnection();
     	    if(!cc.isClosed())
     	    System.out.println("Succeeded connecting to the Database!");
     	    Statement statement = cc.createStatement();
-    	    String sql = "SELECT * FROM MISSION WHERE member = '" + openid +"' and state = '0'";
-        	System.out.println(sql);
-        	ResultSet rs = statement.executeQuery(sql);
-        	list=convertList(rs);
-            
-    	}
+    	    
+    	    
+		    String sql = "SELECT * FROM TEAM " + 
+		    		"where id='"+id+"'";
+	    	System.out.println(sql);
+	    	ResultSet rs = statement.executeQuery(sql);
+	    	list = convertList(rs,list);
+	    	String sql2 = "SELECT * FROM USER_TEAM WHERE TEAM ='"+id+"' and identity ='1'";
+	    	rs = statement.executeQuery(sql2);
+	    	list = convertList(rs,list);
+	    	String sql3 = "SELECT * FROM USER_TEAM WHERE TEAM ='"+id+"' and identity ='0'";
+	    	rs = statement.executeQuery(sql3);
+	    	list = convertList(rs,list);
+    	    
+        }
     	catch(SQLException e){
     		System.out.println(e);
     	}
@@ -98,6 +108,7 @@ public class WX_getmymissionServlet extends HttpServlet {
         
         out.write(json2);
         out.flush();
+        
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
