@@ -26,8 +26,18 @@ Page({
       url: '../teamhall/teamhall'
     })
   },
+  myinfo: function (e) {
+    wx.redirectTo({
+      url: '../myinfo/myinfo'
+    })
+  },
+onShow: function(){
 
+},
   onLoad: function () {
+    wx.showLoading({
+      title: '加载中',
+    })
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,
@@ -54,6 +64,7 @@ Page({
         }
       })
     }
+    wx.hideLoading()
   },
 
   getUserInfo: function(e) {

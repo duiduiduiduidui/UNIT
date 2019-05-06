@@ -46,6 +46,9 @@ App({
         }
       });
     }
+
+
+
     // 获取用户信息
     wx.getSetting({
       success: res => {
@@ -67,10 +70,12 @@ App({
       }
     })
   },
+
   globalData: {
     appid: 'wx3984ccd575562869', //appid需自己提供，此处的appid我随机编写
-    openid:'',
+    openid: '',
     secret: 'f4a3f115ae443083b75a6c6bcaaae111',
-    userInfo: null
-  }
+    userInfo: null,
+    }
+
 })

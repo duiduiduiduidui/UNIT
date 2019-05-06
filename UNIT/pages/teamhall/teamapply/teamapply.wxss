@@ -1,0 +1,7 @@
+/* pages/teamhall/teamapply/teamapply.wxss */
+.team_img {
+  width: 105rpx;
+  height: 105rpx;
+  vertical-align: middle;
+  margin: 20rpx;
+}

@@ -1,0 +1,9 @@
+<!--pages/myinfo/myinfo.wxml-->
+
+<view class="page">
+
+  <view>
+    <image class="head_img" mode="widthFix" src="{{info[0].photourl}}"></image>
+  </view>
+
+</view>

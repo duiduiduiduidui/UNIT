@@ -4,12 +4,16 @@
     "pages/logs/logs",
     "pages/signup/signup",
     "pages/teamhall/teamhall",
-    "pages/teamhall/teamcreate/teamcreate"
+    "pages/teamhall/teamcreate/teamcreate",
+    "pages/myteam/myteam",
+    "pages/myinfo/myinfo",
+    "pages/teamhall/teamapply/teamapply"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

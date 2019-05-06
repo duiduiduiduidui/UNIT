@@ -1,0 +1,7 @@
+/* pages/myinfo/myinfo.wxss */
+.head_img{
+  width: 105rpx;
+  height: 105rpx;
+  vertical-align: middle;
+  margin: 20rpx;
+}

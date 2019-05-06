@@ -43,11 +43,11 @@ Page({
   teamTypeColumnChange: function (e) {
     if (e.detail.column == 0 && e.detail.value == 0) {
       this.setData({
-        multiArray: [['长期队伍', '短期队伍'], ['数学建模', '商业分析', '大创竞赛']]
+        multiArray: [['长期队伍', '短期队伍'], ['数学建模','计算机大赛', '商业分析', '大创竞赛']]
       })
     } else if (e.detail.column == 0 && e.detail.value == 1) {
       this.setData({
-        multiArray: [['长期队伍', '短期队伍'], ['约饭', '约球', '约。。']]
+        multiArray: [['长期队伍', '短期队伍'], ['约饭', '约球']]
       })
     }
   },
@@ -110,6 +110,16 @@ Page({
           console.log(res)
         }
       });
+
+      wx.showToast({
+        title: '创建成功',
+        icon: 'success',
+        duration: 1500,
+        success: function(res){
+          wx.navigateBack()
+        }
+      })
+
     }
   },
 
