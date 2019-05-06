@@ -1,1 +1,123 @@
 /* pages/teamhall/teamcreate/teamcreate.wxss */
+
+page {
+  background-color: #f5f5f5;
+}
+
+.teamname {
+  position: absolute;
+  height: 50rpx;
+  width: 650rpx;
+  top: 25rpx;
+  left: 25rpx;
+}
+
+.teamname_title {
+  font-size: 30rpx;
+  position: absolute;
+  left: 15rpx;
+}
+
+.myteamname {
+  background-color: #fff;
+  position: absolute;
+  height: 50rpx;
+  width: 650rpx;
+  top: 60rpx;
+  left: 25rpx;
+  border-radius: 15%;
+  font-size: 28rpx;
+}
+
+.teamtype {
+  position: absolute;
+  top: 150rpx;
+}
+
+.teamtype_title {
+  width: 700rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 35rpx;
+}
+
+.picker {
+  background-color: #fff;
+  position: absolute;
+  height: 50rpx;
+  width: 650rpx;
+  top: 60rpx;
+  left: 45rpx;
+  border-radius: 15%;
+  font-size: 28rpx;
+}
+
+.teamscale {
+  position: absolute;
+  top: 300rpx;
+}
+
+.teamscale_title {
+  width: 300rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 35rpx;
+}
+
+.teamscaleslider {
+  position: absolute;
+  height: 70rpx;
+  width: 660rpx;
+  top: 60rpx;
+  left: 45rpx;
+  border-radius: 15%;
+  font-size: 30rpx;
+}
+
+.teamdate {
+  position: absolute;
+  top: 450rpx;
+}
+
+.teamdate_title {
+  width: 500rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 35rpx;
+}
+
+.teamdescription {
+  position: absolute;
+  top: 600rpx;
+}
+
+.teamdescription_title {
+  width: 500rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 38rpx;
+}
+
+.myteamdescription {
+  background-color: #fff;
+  position: absolute;
+  height: 300rpx;
+  width: 670rpx;
+  top: 60rpx;
+  left: 35rpx;
+  font-size: 35rpx;
+  border-radius: 5%;
+}
+
+.buttom {
+  position: absolute;
+  top: 1020rpx;
+  width: 100%;
+  text-align: center;
+}
+
+.submit {
+  width: 45%;
+  position: absolute;
+  left:200rpx;
+}

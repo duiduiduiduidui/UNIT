@@ -13,7 +13,10 @@
     <button class="sign-up" bindtap='signup'>进入UNIT</button>
   </view>
   <view class="teamhall">
-    <button class="teamhall" bindtap='teamhall'>队伍大厅(这个之后放在注册界面的onload中判断)</button>
+    <button class="teamhall" bindtap='teamhall'>队伍大厅</button>
+  </view>
+  <view class="myteam">
+    <button class="myteam" bindtap='myteam'>我的队伍</button>
   </view>
     <view class="myinfo">
     <button class="myinfo" bindtap='myinfo'>个人信息</button>

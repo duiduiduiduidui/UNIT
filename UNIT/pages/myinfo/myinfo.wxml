@@ -2,8 +2,28 @@
 
 <view class="page">
 
-  <view>
-    <image class="head_img" mode="widthFix" src="{{info[0].photourl}}"></image>
+  <!--基本信息-->
+  <view class="info">
+    <view>
+      <image class="head_img" mode="widthFix" src="{{info[0].photourl}}"></image>
+    </view>
+    <view>
+    <view><text class="name">昵称：{{info[0].nickname}}</text></view>
+    <view><text class="grade">年级：{{info[0].grade}}</text></view>
+    <view><text class="grade">邮箱：{{info[0].mail}}</text></view>
+    <view><text>我的标签：{{info[0].label}}</text></view>
+    </view>
   </view>
+  <!--以上为基本信息-->
+
+<!--评分-->
+<view class="score">
+<view><text>信用评分：{{info[0].credit}}</text></view>
+<view><text>团队精神：{{info[0].team_sprit}}</text></view>
+<view><text>技术评分：{{info[0].tech}}</text></view>
+<view><text>守时评分：{{info[0].time_keeping}}</text></view>
+</view>
+<!--以上为评分-->
+
 
 </view>

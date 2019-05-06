@@ -1,1 +1,125 @@
 /* pages/signup/signup.wxss */
+
+page {
+  background-color: #f5f5f5;
+}
+
+.nickname {
+  position: absolute;
+  height: 50rpx;
+  width: 650rpx;
+  top: 25rpx;
+  left: 25rpx;
+}
+
+.nickname_title {
+  font-size: 30rpx;
+  position: absolute;
+  left: 15rpx;
+}
+
+.mynickname {
+  background-color: #fff;
+  position: absolute;
+  height: 50rpx;
+  width: 650rpx;
+  top: 60rpx;
+  left: 25rpx;
+  border-radius: 15%;
+  font-size: 30rpx;
+}
+
+.email {
+  position: absolute;
+  top: 150rpx;
+}
+
+.email_title {
+  width: 700rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 35rpx;
+}
+
+.myemail {
+  background-color: #fff;
+  position: absolute;
+  height: 50rpx;
+  width: 650rpx;
+  top: 60rpx;
+  left: 45rpx;
+  border-radius: 15%;
+  font-size: 30rpx;
+}
+
+.grade {
+  position: absolute;
+  top: 300rpx;
+}
+
+.grade_title {
+  width: 300rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 35rpx;
+}
+
+.picker {
+  background-color: #fff;
+  position: absolute;
+  height: 50rpx;
+  width: 150rpx;
+  left: 541rpx;
+  border-radius: 15%;
+  font-size: 30rpx;
+  color: rgb(119, 119, 119);
+}
+
+.labels {
+  position: absolute;
+  top: 450rpx;
+}
+
+.labels_title {
+  position: absolute;
+  width: 2000rpx;
+}
+
+.labels_text {
+  width: 300rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 45rpx;
+}
+.labels_amount{
+  width: 300rpx;
+  font-size: 30rpx;
+  position: absolute;
+  left: 600rpx;
+}
+
+.floatlabels {
+  position: absolute;
+  top: 100rpx;
+  width: 1000rpx;
+}
+
+.change {
+  position: absolute;
+  top: 550rpx;
+  width: 1000rpx;
+}
+
+.chosenlabels {
+  position: absolute;
+  top: 650rpx;
+  width: 1000rpx;
+}
+
+.buttom {
+  top: 1220rpx;
+  text-align: center;
+  width: 45%;
+  position: absolute;
+  left: 200rpx;
+}

@@ -4,11 +4,64 @@ page {
   background-color: #f5f5f5;
 }
 
-/* 外层视图 */
-
-.cont {
+.searcher {
   width: 100%;
   margin: 0 auto;
+  position: relative;
+}
+
+.idsearch_title {
+  position: absolute;
+  height: 30rpx;
+  width: 30rpx;
+  top: 35rpx;
+  left: 25rpx;
+}
+
+.idsearch {
+  position: absolute;
+  width: 100%;
+  top: 25rpx;
+  left: 80rpx;
+  height: 5rpx;
+}
+
+.idsearcher {
+  border-radius: 10%;
+  background-color: #fff;
+  position: absolute;
+  height: 15rpx;
+  width: 290rpx;
+  font-size: 23rpx;
+}
+
+.idsearcher_placeholder {
+  font-size: 23rpx;
+}
+
+.typesearch_title {
+  position: absolute;
+  height: 30rpx;
+  width: 30rpx;
+  top: 33rpx;
+  left: 400rpx;
+}
+
+.typesearch {
+  border-radius: 10%;
+  background-color: #fff;
+  position: absolute;
+  top: 31rpx;
+  left: 440rpx;
+  vertical-align: middle;
+  color: #888;
+  font-size: 25rpx;
+  height: 45rpx;
+  width: 270rpx;
+}
+
+.pickers {
+  vertical-align: middle;
 }
 
 .list {
@@ -18,6 +71,15 @@ page {
   border-radius: 10rpx;
   line-height: 170rpx;
   overflow: hidden;
+}
+
+/* 外层视图 */
+
+.cont {
+  width: 100%;
+  margin: 0 auto;
+  position: absolute;
+  top: 80rpx;
 }
 
 /* 删除外层包裹视图 */
@@ -37,26 +99,6 @@ page {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* 删除 */
-
-.list_del.del {
-  background-color: green;
-  width: 180rpx;
-  text-align: center;
-  z-index: 4;
-  right: 0;
-  color: #fff;
-}
-
-.list_del.com {
-  background-color: yellow;
-  width: 180rpx;
-  text-align: center;
-  z-index: 4;
-  right: 0;
-  color: #fff;
 }
 
 /* 列表图片 */
@@ -131,4 +173,13 @@ page {
   height: 40rpx;
   font-size: 25rpx;
   right: 80rpx;
+}
+
+.createteam {
+  position: fixed;
+  width: 80rpx;
+  height: 80rpx;
+  bottom: 170rpx;
+  right: 40rpx;
+  z-index: 9999;
 }

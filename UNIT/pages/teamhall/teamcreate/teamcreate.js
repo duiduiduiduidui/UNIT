@@ -8,16 +8,19 @@ Page({
    */
   data: {
 
-    multiArray: [['长期队伍', '短期队伍'], ['数学建模', '商业分析', '大创竞赛']],
+    multiArray: [
+      ['长期队伍', '短期队伍'],
+      ['数学建模', '商业分析', '大创竞赛']
+    ],
     multiIndex: [0, 0],
-    tip:"",
+    tip: "",
 
     name: "",
-    teamtype: "",
-    teamtype_small: "",
-    captain:"",
+    teamtype: "全部",
+    teamtype_small: "全部",
+    captain: "",
     number_max: 0,
-    description:"",
+    description: "",
     date: "",
 
   },
@@ -25,13 +28,21 @@ Page({
 
   //更改队伍名称
   teamNameInput(e) {
-    this.setData({
-      name: e.detail.value
-    })
+    if (e.detail.value.length <= 9) {
+      this.setData({
+        name: e.detail.value
+      })
+    } else {
+      wx.showModal({
+        title: '等一下',
+        content: '队伍名称不可以太长哦',
+      })
+    }
+
   },
 
   //更改队伍类型  
-  teamTypeChange: function (e) {
+  teamTypeChange: function(e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       multiIndex: e.detail.value,
@@ -40,14 +51,20 @@ Page({
     })
   },
 
-  teamTypeColumnChange: function (e) {
+  teamTypeColumnChange: function(e) {
     if (e.detail.column == 0 && e.detail.value == 0) {
       this.setData({
-        multiArray: [['长期队伍', '短期队伍'], ['数学建模','计算机大赛', '商业分析', '大创竞赛']]
+        multiArray: [
+          ['长期队伍', '短期队伍'],
+          ['数学建模', '计算机大赛', '商业分析', '大创竞赛']
+        ]
       })
     } else if (e.detail.column == 0 && e.detail.value == 1) {
       this.setData({
-        multiArray: [['长期队伍', '短期队伍'], ['约饭', '约球']]
+        multiArray: [
+          ['长期队伍', '短期队伍'],
+          ['约饭', '约球']
+        ]
       })
     }
   },
@@ -61,7 +78,7 @@ Page({
   },
 
   //更改队伍到期日
-  changeTeamDate: function(e){
+  changeTeamDate: function(e) {
     console.log(e.detail.value)
     this.setData({
       date: e.detail.value
@@ -76,16 +93,16 @@ Page({
   },
 
   //提交表单
-  submitinfo: function (e) {
+  submitinfo: function(e) {
     if (this.data.name.length == 0) {
       this.setData({
         tip: '提示：队伍名称不能为空！'
       })
-    } else if(this.data.teamtype.length == 0 || this.data.teamtype_small.length == 0){
+    } else if (this.data.teamtype.length == "全部" || this.data.teamtype_small.length == "全部") {
       this.setData({
         tip: '提示：请选择队伍类型！'
       })
-    } else{
+    } else {
       var name = this.data.name
       var teamtype = this.data.teamtype
       var teamtype_small = this.data.teamtype_small
@@ -106,7 +123,7 @@ Page({
         },
         method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT 
         header: {}, // 设置请求的 header 
-        success: function (res) {
+        success: function(res) {
           console.log(res)
         }
       });
@@ -115,7 +132,7 @@ Page({
         title: '创建成功',
         icon: 'success',
         duration: 1500,
-        success: function(res){
+        success: function(res) {
           wx.navigateBack()
         }
       })

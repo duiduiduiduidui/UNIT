@@ -1,19 +1,27 @@
 <!--pages/teamhall/teamhall.wxml-->
-<view class="searcher">
-  <input class="idsearcher" placeholder='请输入队伍名称或ID' bindinput="idSearch"></input>
+<view class="searcher" >
+<image class="idsearch_title" src="../../image/search.png"></image>
+  <view class="idsearch">
+    <input class="idsearcher" placeholder='请输入队伍名称或ID' placeholder-class="idsearcher_placeholder" bindinput="idSearch"></input>
+  </view>
+
   <!-- 按类别搜索 -->
-  <picker mode="multiSelector" bindchange="teamTypeChange" bindcolumnchange="teamTypeColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
+  <image class="typesearch_title" src="../../image/select.png"></image>
+  <view class="typesearch">
+    <picker mode="multiSelector" bindchange="teamTypeChange" bindcolumnchange="teamTypeColumnChange" value="{{multiIndex}}" range="{{multiArray}}" class="pickers">
       <view class="picker">
-      {{teamtype}}，{{teamtype_small}}
+        {{teamtype}}，{{teamtype_small}}
       </view>
     </picker>
+  </view>
+
 </view>
 
 <view class="cont">
   <!-- 列表 -->
 
-  <view wx:for="{{list}}" wx:key="index" class="list" >
-    <view data-index="{{index}}" style="{{item.shows}}" class="list_del txt" >
+  <view wx:for="{{list}}" wx:key="index" class="list">
+    <view data-index="{{index}}" style="{{item.shows}}" class="list_del txt">
       <image class="list_img" mode="widthFix" src="../../image/{{item.teamtype_smalll}}.png"></image>
       <text class='list_name'>{{item.name}}</text>
       <image class="list_head" mode="widthFix" src="{{item.photourl}}"></image>
@@ -24,9 +32,8 @@
       <text class='list_apply' bindtap='teamDetail' data-id="{{item.id}}">队伍详情</text>
     </view>
   </view>
-
+<view bindtap='createTeam'>
+  <image class="createteam" src="../../image/add.png"></image>
+</view>
 </view>
 
-<view>
-  <button class="createteam" bindtap='createTeam'>创建队伍（脑补一个加号）</button>
-</view>

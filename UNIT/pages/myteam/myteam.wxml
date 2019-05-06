@@ -1,2 +1,18 @@
 <!--pages/myteam/myteam.wxml-->
-<text>pages/myteam/myteam.wxml</text>
+<view class="cont">
+  <!-- 列表 -->
+
+  <view wx:for="{{list}}" wx:key="index" class="list" >
+    <view data-index="{{index}}" style="{{item.shows}}" class="list_del txt" >
+      <image class="list_img" mode="widthFix" src="../../image/{{item.teamtype_smalll}}.png"></image>
+      <text class='list_name'>{{item.name}}</text>
+      <image class="list_head" mode="widthFix" src="{{item.photourl}}"></image>
+      <label class='list_type'>{{item.teamtype_small}}</label>
+      <text class="list_id">队伍id:{{item.id}}</text>
+      <text class='list_member'>当前成员：{{item.number_now}} / {{item.number_max}}</text>
+      <text class='list_datas'>{{item.year}}.{{item.month}}.{{item.day}}</text>
+      <text class='list_calandar' bindtap='teamCalendar' data-id="{{item.id}}">队伍日历</text>
+    </view>
+  </view>
+
+</view>

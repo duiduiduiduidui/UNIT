@@ -37,7 +37,7 @@ App({
                 d.openid = res.data.openid;
                 wx.setStorageSync('user', d.openid); //存储openid  
                 console.log(d.openid)
-                console.log(res)
+                wx.hideLoading()
               }
             });
           } else {

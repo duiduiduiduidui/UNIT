@@ -4,13 +4,14 @@
 
   <view class="teamname">
     <!--队伍名称-->
-    <input class="myteamname" placeholder='队伍名称' bindinput="teamNameInput"></input>
+    <view class="teamname_title"><text>*队伍名称：</text></view>
+    <view class="myteamname"><input bindinput="teamNameInput"></input></view>
   </view>
 
 
   <!--队伍类型-->
   <view class="teamtype">
-    <view class="teamtype_title">请选择队伍类型</view>
+    <view class="teamtype_title">*队伍类型：</view>
     <picker mode="multiSelector" bindchange="teamTypeChange" bindcolumnchange="teamTypeColumnChange" value="{{multiIndex}}" range="{{multiArray}}">
       <view class="picker">
       {{teamtype}}，{{teamtype_small}}
@@ -20,7 +21,7 @@
 
   <!--队伍人数-->
   <view class="teamscale">
-    <text class="teamscale_title">队伍人数：</text>
+    <text class="teamscale_title">*队伍人数：</text>
     <view class="teamscaleslider">
       <slider min="1" max="10" bindchange="changeTeamScale" show-value/>
     </view>
@@ -28,8 +29,8 @@
 
   <!--队伍到期日-->
   <view class="teamdate">
-    <view class="teamdate_title">请选择队伍到期日</view>
-    <picker mode="date" value="{{date}}" start="{{date}}" end="2022-08-30" bindchange="changeTeamDate">
+    <view class="teamdate_title">*请选择队伍到期日：</view>
+    <picker mode="date" value="{{date}}" start="{{date}}" end="2056-08-30" bindchange="changeTeamDate">
       <view class="picker">
         {{date}}
       </view>
@@ -39,7 +40,8 @@
 
   <view class="teamdescription">
     <!--队伍描述-->
-    <input class="myteamdescription" placeholder='队伍描述' bindinput="teamDescriptionInput"></input>
+    <text class="teamdescription_title" cursor-spacing='20'>描述一下你的队伍吧：</text>
+    <textarea class="myteamdescription" bindinput="teamDescriptionInput"></textarea>
   </view>
   
 </view>

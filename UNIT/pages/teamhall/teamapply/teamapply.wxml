@@ -20,7 +20,9 @@
     </view>
 
     <view>
-      <view wx:if="{{memberinfo.length!=0}}"><text class="didi_title">队员：</text></view>
+      <view wx:if="{{memberinfo.length!=0}}">
+        <text class="didi_title">队员：</text>
+      </view>
       <view class="didi" wx:for="{{memberinfo}}" wx:key="index">
         <text class="didimen">{{item.nickname}}</text>
       </view>
@@ -29,15 +31,23 @@
   </view>
   <!--成员信息到此为止-->
   <view class="team_descrip">
-  <view><text class="team_type">队伍类型：{{teaminfo.teamtype_small}}</text></view>
-  <view><text class="team_intro">队伍简介：{{teaminfo.description}}</text></view>
+    <view>
+      <text class="team_type">队伍类型：{{teaminfo.teamtype_small}}</text>
+    </view>
+    <view>
+      <text class="team_intro">队伍简介：{{teaminfo.description}}</text>
+    </view>
   </view>
 
 </view>
 
-<view><text>------------- 分割线 --------------</text></view>
-<view><text>-------------队伍申请--------------</text></view>
+<view>
+  <text>------------- 分割线 --------------</text>
+</view>
+<view>
+  <text>-------------队伍申请--------------</text>
+</view>
 <view class="apply">
-  <input class="self_description" placeholder='说点什么吧' bindinput='inputSelfDescrip'></input>
+  <textarea class="self_description" placeholder='说点什么吧' bindinput='inputSelfDescrip'> </textarea>
   <button class="submit" bindtap='submitApply'>申请队伍</button>
 </view>

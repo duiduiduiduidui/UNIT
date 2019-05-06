@@ -55,7 +55,7 @@ Page({
           wx.showToast({
             title: '申请成功',
             icon: 'success',
-            duration: 2000,
+            duration: 3000,
             success: function (res) {
               wx.navigateBack()
             }
