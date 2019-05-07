@@ -109,23 +109,23 @@ public class WX_getteamServlet extends HttpServlet {
     	    System.out.println("Succeeded connecting to the Database!");
     	    Statement statement = cc.createStatement();
     	    
-    	    if(teamtype.matches("all")) {
+    	    if(teamtype.matches("全部")) {
 	    	    String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
-	    	    		"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and user !='"+openid+"'and(name like '%"+info+"%' or id like '%"+info+"%')";
+	    	    		"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and(name like '%"+info+"%' or id like '%"+info+"%')and id not in (select team from user_team where user = '"+openid+"')";
 	        	System.out.println(sql);
 	        	ResultSet rs = statement.executeQuery(sql);
 	        	list=convertList(rs,openid);
     	    }
-    	    else if(teamtype_small.matches("all")) {
+    	    else if(teamtype_small.matches("全部")) {
     	    	String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
-    	    			"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and user !='"+openid+"'and teamtype="+"'"+teamtype+"'and(name like '%"+info+"%' or id like '%"+info+"%')";
+    	    			"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and teamtype="+"'"+teamtype+"'and(name like '%"+info+"%' or id like '%"+info+"%'and id not in (select team from user_team where user = '"+openid+"')";
  	        	System.out.println(sql);
  	        	ResultSet rs = statement.executeQuery(sql);
  	        	list=convertList(rs,openid);
     	    }
     	    else {
     	    	String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
-    	    			"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and user !='"+openid+"'and teamtype="+"'"+teamtype+"' and teamtype_small = '"+teamtype_small+"'and(name like '%"+info+"%' or id like '%"+info+"%')";
+    	    			"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and is_full = '0' and teamtype="+"'"+teamtype+"' and teamtype_small = '"+teamtype_small+"'and(name like '%"+info+"%' or id like '%"+info+"%'and id not in (select team from user_team where user = '"+openid+"')";
  	        	System.out.println(sql);
  	        	ResultSet rs = statement.executeQuery(sql);
  	        	list=convertList(rs,openid);

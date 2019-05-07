@@ -18,7 +18,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;  
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date; 
+import java.util.Calendar; 
 
+import java.text.SimpleDateFormat; 
 import java.io.FileReader;
 import java.util.Map;
 import java.util.HashMap;
@@ -50,8 +53,13 @@ public class WX_storeteaminfoServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Method"
         		+ "s", "GET,POST");
         //获取微信小程序get的参数值并打印
-        
-        
+        Date now = new Date(); 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//可以方便地修改日期格式
+
+
+        String hehe = dateFormat.format( now ); 
+        System.out.println(hehe); 
+
         System.out.println("captain="+request.getParameter("captain"));
         System.out.println("name="+request.getParameter("name"));
         System.out.println("teamtype="+request.getParameter("teamtype"));
@@ -105,6 +113,12 @@ public class WX_storeteaminfoServlet extends HttpServlet {
     		    sql3 = "Insert Into user_team values('"+captain+"','"+t.getid()+"','1','0')";
     		    System.out.println("Succeed to insert");
     		    statement.execute(sql3);
+    		    sql3 = "Insert into log \r\n" + 
+    		    		"(team,description,time) \r\n" + 
+    		    		"values('"+t.getid()+"','队伍已建立！','"+TestDate.getdate()+"')";
+    		    System.out.println("Succeed to insert");
+    		    statement.execute(sql3);
+    		    
             }
             else{
             	System.out.println("存在,该用户创立过同名team，不应该再次创立");

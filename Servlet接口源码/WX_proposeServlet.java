@@ -37,61 +37,20 @@ import java.sql.Statement;
 /**
  * Servlet implementation class WX_storeuserinfoServlet
  */
-@WebServlet("/WX_getteaminfoServlet")
+@WebServlet("/WX_proposeServlet")
 //用来存储个人信息
-public class WX_getteaminfoServlet extends HttpServlet {
-	private static List convertList1(ResultSet rs,List list) throws SQLException{
-		ResultSetMetaData md = rs.getMetaData();//获取键名
-		int columnCount = md.getColumnCount();//获取行的数量
-		while (rs.next()) {
-			Map rowData = new HashMap();//声明Map
-			for (int i = 1; i <= columnCount; i++) {
-			rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
-			String columnname = md.getColumnName(i);
-			String teamtype_smalll;
-			if(columnname.matches("teamtype_small")) {
-				if(rs.getObject(i).toString().equals("数学建模")) {
-					teamtype_smalll = "1";
-				}
-				else if(rs.getObject(i).toString().equals("计算机大赛")) {
-					teamtype_smalll = "2";
-				}
-				else if(rs.getObject(i).toString().equals("商业分析")) {
-					teamtype_smalll = "3";
-				}
-				else if(rs.getObject(i).toString().equals("大创竞赛")) {
-					teamtype_smalll = "4";
-				}
-				else if(rs.getObject(i).toString().equals("约饭")) {
-					teamtype_smalll = "5";
-				}
-				else if(rs.getObject(i).toString().equals("约球")) {
-					teamtype_smalll = "6";
-				}
-				else {;teamtype_smalll = "0";}
-				
-				rowData.put("teamtype_smalll", teamtype_smalll);
-			}
-			}
-			list.add(rowData);
-			
-		}
-
-		
-		return list;
-		}
+public class WX_proposeServlet extends HttpServlet {
+	
 	private static List convertList(ResultSet rs,List list) throws SQLException{
 		ResultSetMetaData md = rs.getMetaData();//获取键名
 		int columnCount = md.getColumnCount();//获取行的数量
 		while (rs.next()) {
-			Map rowData = new HashMap();//声明Map
-			for (int i = 1; i <= columnCount; i++) {
-			rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
-			}
-			list.add(rowData);
+		Map rowData = new HashMap();//声明Map
+		for (int i = 1; i <= columnCount; i++) {
+		rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
 		}
-
-		
+		list.add(rowData);
+		}
 		return list;
 		}
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -105,31 +64,73 @@ public class WX_getteaminfoServlet extends HttpServlet {
         //获取微信小程序get的参数值并打印
         
        
-        System.out.println("id="+request.getParameter("id"));
+        System.out.println("openid="+request.getParameter("openid"));
         //转成json数据
-        String id;
-        id = request.getParameter("id");
+        String openid,mission;
+        openid = request.getParameter("openid");
+        mission = request.getParameter("mission");
         List list = new ArrayList();
         try{
     		Connection cc=DataBaseDemo.getConnection();
     	    if(!cc.isClosed())
     	    System.out.println("Succeeded connecting to the Database!");
     	    Statement statement = cc.createStatement();
-    	    
-    	    
-		    String sql = "SELECT * FROM TEAM " + 
-		    		"where id='"+id+"'";
-	    	System.out.println(sql);
-	    	ResultSet rs = statement.executeQuery(sql);
-	    	list = convertList1(rs,list);
-	    	String sql2 = "SELECT * FROM USER_TEAM left join user on(user.openid = user_team.user)WHERE TEAM ='"+id+"' and identity ='1'";
-	    	rs = statement.executeQuery(sql2);
-	    	list = convertList(rs,list);
-	    	String sql3 = "SELECT * FROM USER_TEAM left join user on(user.openid = user_team.user)WHERE TEAM ='"+id+"' and identity ='2'";
-	    	rs = statement.executeQuery(sql3);
-	    	list = convertList(rs,list);
-    	    
-        }
+    	    String sql1 = "SELECT captain,team FROM MISSION \r\n" + 
+    	    		"LEFT JOIN TEAM ON(team.id=mission.team )\r\n" + 
+    	    		"WHERE mission.id = '"+mission+"' ";
+    	    System.out.println(sql1);
+    	    ResultSet rs = statement.executeQuery(sql1);
+    	    String cap="",team="";
+            while(rs.next()) {
+            cap = rs.getString("captain");
+            team = rs.getString("team");}
+            String state, proposed;
+            if(cap.equals(openid)) {
+            	state = "1";
+            	proposed ="0";
+            }
+            else {
+            	state = "0";
+            	proposed = "1";
+            }
+            String sql2 = "Update mission set state = '"+state+"' , is_proposed ='"+proposed+"' where id ="+mission+";";
+            System.out.println(sql2);
+            statement.execute(sql2);
+            String sql3 = "SELECT nickname,name from mission left join user on(mission.member = user.openid) where id = '"+mission+"'";
+            System.out.println(sql3);
+            rs = statement.executeQuery(sql3);
+            String nickname="",name ="";
+            while(rs.next()) {
+            nickname = rs.getString("nickname");
+            name = rs.getString("name");}
+            String sqllog;
+            if(state.equals("0")) {
+            	sqllog = "Insert into log \r\n" + 
+    		    		"(team,description,time) \r\n" + 
+    		    		"values('"+team+"','"+nickname+"提交了任务\""+name+"\"','"+TestDate.getdate()+"')";
+            	System.out.println(sqllog);
+            } 
+            else {
+            	sqllog ="Insert into log \r\n" + 
+    		    		"(team,description,time) \r\n" + 
+    		    		"values('"+team+"','"+nickname+"已完成任务\""+name+"\"','"+TestDate.getdate()+"')";
+            	System.out.println(sqllog);
+            }
+            statement.execute(sqllog);
+    	    String sql = "SELECT * FROM MISSION \r\n" + 
+    	    		"LEFT JOIN USER_TEAM ON(user_team.team=mission.team and user_team.user = mission.member)WHERE member = '" + openid +"' and state = '0' and is_proposed = '0'"
+    	    				+ "order by year,month,day";
+        	System.out.println(sql);
+        	rs = statement.executeQuery(sql);
+        	list=convertList(rs,list);
+        	sql = "SELECT * FROM MISSION \r\n" + 
+        			"LEFT JOIN USER_TEAM ON(user_team.team=mission.team and user_team.user = mission.member)WHERE member = '" + openid +"' and state = '0' and is_proposed = '1'"
+        					+ "order by year,month,day";
+        	System.out.println(sql);
+        	rs = statement.executeQuery(sql);
+        	list=convertList(rs,list);
+            
+    	}
     	catch(SQLException e){
     		System.out.println(e);
     	}
@@ -147,7 +148,6 @@ public class WX_getteaminfoServlet extends HttpServlet {
         
         out.write(json2);
         out.flush();
-        
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

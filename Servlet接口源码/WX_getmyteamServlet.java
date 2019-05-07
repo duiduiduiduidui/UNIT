@@ -49,13 +49,39 @@ public class WX_getmyteamServlet extends HttpServlet {
 		Map rowData = new HashMap();//声明Map
 		for (int i = 1; i <= columnCount; i++) {
 		rowData.put(md.getColumnName(i), rs.getObject(i));//获取键名及值
+		String columnname = md.getColumnName(i);
+		String teamtype_smalll;
+		if(columnname.matches("teamtype_small")) {
+			if(rs.getObject(i).toString().equals("数学建模")) {
+				teamtype_smalll = "1";
+			}
+			else if(rs.getObject(i).toString().equals("计算机大赛")) {
+				teamtype_smalll = "2";
+			}
+			else if(rs.getObject(i).toString().equals("商业分析")) {
+				teamtype_smalll = "3";
+			}
+			else if(rs.getObject(i).toString().equals("大创竞赛")) {
+				teamtype_smalll = "4";
+			}
+			else if(rs.getObject(i).toString().equals("约饭")) {
+				teamtype_smalll = "5";
+			}
+			else if(rs.getObject(i).toString().equals("约球")) {
+				teamtype_smalll = "6";
+			}
+			else {;teamtype_smalll = "0";}
+			
+			rowData.put("teamtype_smalll", teamtype_smalll);
 		}
-		if(rs.getObject("captain")==openid) {
+		}
+		if(rs.getObject("captain").toString().equals(openid)) {
 			rowData.put("is_captain",1);
 		}
 		else {
 			rowData.put("is_captain",0);
 		}
+		
 		list.add(rowData);
 		}
 		return list;
@@ -83,9 +109,9 @@ public class WX_getmyteamServlet extends HttpServlet {
     	    Statement statement = cc.createStatement();
     	    
     	    
-		    String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.id = user_team.team ) \r\n" + 
-		    		"where state='0' and user ='"+openid+"'";
-	    	System.out.println(sql);
+		    String sql = "SELECT DISTINCT id,name,photourl,teamtype,teamtype_small,captain,number_max,number_now,description,year,month,day FROM TEAM RIGHT OUTER JOIN USER_TEAM ON(team.captain= user_team.user ) \r\n" + 
+	    			"LEFT outer JOIN USER on(user_team.user=user.openid) where state='0' and user ='"+openid+"'";
+	        System.out.println(sql);
 	    	ResultSet rs = statement.executeQuery(sql);
 	    	list=convertList(rs,openid);
     	    

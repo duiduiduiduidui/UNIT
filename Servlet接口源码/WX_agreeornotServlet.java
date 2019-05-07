@@ -37,9 +37,9 @@ import java.sql.Statement;
 /**
  * Servlet implementation class WX_storeuserinfoServlet
  */
-@WebServlet("/WX_getmymissionServlet")
+@WebServlet("/WX_agreeornotServlet")
 //用来存储个人信息
-public class WX_getmymissionServlet extends HttpServlet {
+public class WX_agreeornotServlet extends HttpServlet {
 	
 	private static List convertList(ResultSet rs,List list) throws SQLException{
 		ResultSetMetaData md = rs.getMetaData();//获取键名
@@ -64,46 +64,77 @@ public class WX_getmymissionServlet extends HttpServlet {
         //获取微信小程序get的参数值并打印
         
        
-        System.out.println("openid="+request.getParameter("openid"));
+        System.out.println("teamid="+request.getParameter("teamid"));
         //转成json数据
-        String openid;
-        openid = request.getParameter("openid");
+        String teamid,agree,app_openid;
+        teamid = request.getParameter("teamid");
+        agree = request.getParameter("agree");
+        app_openid = request.getParameter("app_openid");
+        String mes = "";
         List list = new ArrayList();
-        try{
-    		Connection cc=DataBaseDemo.getConnection();
-    	    if(!cc.isClosed())
-    	    System.out.println("Succeeded connecting to the Database!");
-    	    Statement statement = cc.createStatement();
-    	    String sql = "SELECT * FROM MISSION \r\n" + 
-    	    		"LEFT JOIN USER_TEAM ON(user_team.team=mission.team and user_team.user = mission.member)WHERE member = '" + openid +"' and state = '0' and is_proposed = '0'";
-        	System.out.println(sql);
-        	ResultSet rs = statement.executeQuery(sql);
-        	list=convertList(rs,list);
-        	sql = "SELECT * FROM MISSION \r\n" + 
-        			"LEFT JOIN USER_TEAM ON(user_team.team=mission.team and user_team.user = mission.member)WHERE member = '" + openid +"' and state = '0' and is_proposed = '1'";
-        	System.out.println(sql);
-        	rs = statement.executeQuery(sql);
-        	list=convertList(rs,list);
-            
-    	}
-    	catch(SQLException e){
-    		System.out.println(e);
-    	}
-        //Map<String, Object> result = new HashMap<String, Object>();
-        //JsonParser parse =new JsonParser();//创建json解析器
-		//JsonObject json=(JsonObject) parse.parse(new FileReader("C:\\Users\\Administrator\\Desktop\\iTrip\\data.json"));  //创建jsonObject对象
         
-        //result.put("msg", "用户信息存储成功");
+        	try{
+        		Connection cc=DataBaseDemo.getConnection();
+        	    if(!cc.isClosed())
+        	    System.out.println("Succeeded connecting to the Database!");
+        	    Statement statement = cc.createStatement();
+        	    if(agree.equals("true")) {
+	        	    String sql1 = "DELETE from application where user = '"+app_openid+"' and team ='"+teamid+"'";
+	        	    statement.execute(sql1);
+	        	    System.out.println(sql1);
+	                String sql2 = "SELECT * from team,user where id ='"+teamid+"' and openid = '"+app_openid+"'";
+	                System.out.println(sql2);
+	                ResultSet rs = statement.executeQuery(sql2);
+	                rs.next();
+	        	    int num_now = rs.getInt("number_now");
+	        	    int num_max = rs.getInt("number_max");
+	        	    String nickname = rs.getString("nickname");
+	        	    if(num_now < num_max) {
+	        	    	num_now++;
+	        	    	String sql3 = "Update team set number_now ="+num_now+" where id = '"+teamid+"'";
+	        	    	statement.execute(sql3);
+	        	    	System.out.println(sql3);
+	        	    	String sql5 = "Insert into log \r\n" + 
+	        		    		"(team,description,time) \r\n" + 
+	        		    		"values('"+teamid+"','"+nickname+"加入了队伍！','"+TestDate.getdate()+"')";
+	        	    	System.out.println(sql5);
+	        	    	statement.execute(sql5);
+	        	    	
+	        	    	String sql4 = "Insert into user_team values('"+app_openid+"' , '"+teamid+"' , '1', 0)";
+	        	    	statement.execute(sql4);
+	        	    	System.out.println(sql4);
+	        	    	
+	        	    	mes = "succeed!";
+	        	    }
+	        	    else mes ="teamfull";
+        	    }
+        	    else {
+                	mes="disagree";
+                	String sql1 = "DELETE from application where user = '"+app_openid+"' and team ='"+teamid+"'";
+            	    statement.execute(sql1);
+            	    System.out.println(sql1);
+                }
+                
+        	}
+        	catch(SQLException e){
+        		System.out.println(e);
+        	}
+        
+        
+        
+        Map<String, Object> result = new HashMap<String, Object>();
+        
+        result.put("msg", mes);
         //使用Gson类需要导入gson-2.8.0.jar
        
         //String json1 = new Gson().toJson(result);
         Gson gson = new Gson();
-		String json2 = gson.toJson(list);
+		String json2 = gson.toJson(result);
         Writer out = response.getWriter();
         
         out.write(json2);
         out.flush();
-    }
+	}
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
